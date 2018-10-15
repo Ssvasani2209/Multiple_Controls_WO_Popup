@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bed0e7e042a748f0a12358232f12a07d" Name="Diagram1">
+        <EntityTypeShape EntityType="DEVModel.City" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DEVModel.Employee" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="DEVModel.Gender" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DEVModel.Hobby" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DEVModel.State" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <AssociationConnector Association="DEVModel.FK_City_State" ManuallyRouted="false" />
+        <AssociationConnector Association="DEVModel.FK_Employee_City" ManuallyRouted="false" />
+        <AssociationConnector Association="DEVModel.FK_Employee_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="DEVModel.FK_Employee_State" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DEVModel.SelectedHobbyOfEmployeeWise" Width="1.5" PointX="8" PointY="3.125" />
+        <AssociationConnector Association="DEVModel.FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise" />
+        <AssociationConnector Association="DEVModel.FK_SelectedHobbyOfEmployeeWise_Hobby" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

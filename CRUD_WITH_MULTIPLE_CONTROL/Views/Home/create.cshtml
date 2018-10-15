@@ -1,0 +1,141 @@
+﻿@using MySociety.Models
+@model ServiceChargesModel
+@{
+    Layout = Request.IsAjaxRequest() == true ? null : "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    int i = 1;
+
+}
+
+
+@using (Html.BeginForm("CreateServiceCharge", "Master"))
+{
+
+    <div class="content-wrapper">
+
+        <section class="content-header">  
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li> 
+                <li class="active">Create Group</li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content"> 
+            <div id="testDiv" class="box box-default">
+                <div class="box-header with-border slide-on"> 
+                    <h3 class="box-title"><span class="boxspan"></span>Add Service Charge</h3>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="div-slide-auto1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(m => m.ServiceChargeId)
+                                @Html.HiddenFor(m => m.DeleteList)
+                                @Html.DropDownListFor(m => m.ServiceId, Model.ServiceList.Select(x => new SelectListItem() { Text = x.Value, Value = x.Key.ToString() }), "--Select Service--", new { @id = "ServiceId", @class = "form-control", @placeholder = "Service-Name" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m => m.FlatTypeID, Model.FlatList.Select(x => new SelectListItem() { Text = x.Value, Value = x.Key.ToString() }), "--Select Flat Type--", new { @id = "FlatTypeID", @class = "form-control", @placeholder = "Flat-Name" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Squarefeet, new { @id = "SqrFeet", @class = "form-control", @placeholder = "Sq-Feet", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*  @Html.DropDownListFor(m => m.SelectTypeid, Model.SelectTypeList.Select(x => new SelectListItem() { Text = x.Value, Value = x.Key.ToString() }), "--Select Type--", new { @id = "SelectTypeid", @class = "form-control", @placeholder = "Select-Type" })*@
+
+                                @Html.DropDownListFor(m => m.TermId, Model.TermList.Select(x => new SelectListItem() { Text = x.Value, Value = x.Key.ToString() }), "--Select Term--", new { @id = "TermId", @class = "form-control", @placeholder = "Term-Name" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.TextBoxFor(m => m.OAmount, new { @id = "OAmount", @class = "form-control", @onkeypress = "return floatFuncWithFourDigit(this,event)", @placeholder = "Amount" })
+                                @* <label class="my"></label>*@
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @*  @Html.TextBoxFor(m => m.TainentAmount, new { @id = "TainentAmount", @class = "form-control vali-input", @onkeypress = "return floatFunc(this,event)", @placeholder = "Tenant-Amount" })
+                                    <label class="my"></label>*@
+
+                                @Html.TextBoxFor(m => m.CGSTPER, new { @id = "CGSTPER", @class = "form-control vali-input", @onkeypress = "return floatFunc(this,event)", @placeholder = "CGST%" })
+
+                                <label class="my"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                @Html.TextBoxFor(m => m.SGSTPER, new { @id = "SGSTPER", @class = "form-control vali-input", @onkeypress = "return floatFunc(this,event)", @placeholder = "SGST%" })
+
+                                <label class="my"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group"> 
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="box-footer" id="saveupdate">
+                        <input name="submit" type="submit" id="btSubmit" value="Save" onclick="if (Add() == false) return false;" class="btn btn-info" />
+                        <input name="submit" type="submit" id="update" value="Update" style="Display: none" onclick="if (Update() == false) return false;" class="btn btn-info" />
+                        <input name="submit" type="submit" id="delete" value="Delete" style="Display: none" onclick="if (Delete() == false) return false;" class="btn btn-danger" />&nbsp;&nbsp;
+
+                        <input name="submit" type="submit" id="cancel" value="Cancel" onclick="if (LoadForm() == false) return false;" class="btn btn-default" />&nbsp;&nbsp;
+                         
+                        &nbsp;&nbsp;&nbsp;
+                    </div>
+                </div> 
+
+            </div> 
+        </section>
+
+    </div>
+}
+
+
+@section scripts {  
+
+    <script>
+
+        $(document).ready(function () {
+            $('#loading').hide();
+            LoadForm();
+        });
+        
+    </script> 
+
+
+
+}

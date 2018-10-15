@@ -1,0 +1,237 @@
+﻿@model CRUD_WITH_MULTIPLE_CONTROL.Models.EmployeeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "CreateNewEmployee";
+
+
+    var Filename = "";
+}
+<br />
+<style>
+    .checkboxPadding {
+        padding-left: 20px;
+        width: 6%;
+    }
+</style>
+@using (Html.BeginForm("CreateNewEmployee", "Home", FormMethod.Post, new { id = "frmTemps", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="content-wrapper">
+        <br />
+        <section class="content">
+            <div id="testDiv" class="box box-default">
+
+                <!-- /.box-header -->
+                <div class="div-slide-auto1">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.HiddenFor(m => m.EmpId)
+                                @Html.TextBoxFor(m => m.FirstName, new { @id = "FirstName", @class = "form-control", @placeholder = "First Name" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.MiddleName, new { @id = "MiddleName", @class = "form-control", @placeholder = "Middle Name" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.LastName, new { @id = "LastName", @class = "form-control", @placeholder = "Last Name" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Address, new { @id = "Address", @class = "form-control", @placeholder = "Address" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.StateId, (SelectList)ViewBag.StateList, "---Select State---", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.CityId, (SelectList)ViewBag.CityList, "---Select City---", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label style="font-weight:500">Gender :</label>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="radio-inline">
+                                @Html.RadioButtonFor(x => x.Gender, "Male", new { id = "Male", name = "optradio", @checked = "true" })@Html.Label("Male")
+                            </div>
+                            <div class="radio-inline">
+                                @Html.RadioButtonFor(x => x.Gender, "Female", new { id = "Female", name = "optradio" })@Html.Label("Female")
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label style="font-weight:500">DOB :</label>
+                        </div>
+                        <div class="col-md-2">
+                            @* @Html.TextBoxFor(model => model.DOB, new { @type = "date", @class = "form-control" })*@
+                            @Html.EditorFor(model => model.DOB, new { @Value = DateTime.Now.ToString("dd-MM-yyyy"), @class = "form-control" })
+                        </div><div class="col-md-4"></div>
+                    </div>
+                    <br />
+                    <div class="row">
+
+                        <div class="col-md-1">
+                            @Html.Label("File")
+                        </div>
+                        <div class="col-md-2">
+                            @{
+                                if (Model.fileName != null)
+                                {
+                                    Filename = Model.fileName;
+                                }
+                                else
+                                {
+                                    Filename = "File isn't upload yet.";
+                                }
+
+                            }
+                            @Html.TextBoxFor(model => model.fileUpload, "", new { id = "fileUpload", type = "file", name = "fileUpload" })  
+                        </div>
+                        <div class="col-md-3">
+                         <label for="usr" class="FormLabel">@Filename (Previously uploaded file)</label>
+                        </div>
+                      
+
+                    </div>
+                    <div class="row">
+
+                    </div>
+                    <div class="row">
+                        <h3 style="text-align:center">Hobbies</h3>
+                        <hr />
+                        <div id="checkboxContainer"></div>
+                    </div>
+                    <br /><br />
+                    <div class="box-footer" id="saveupdate">
+                        <input name="submit" type="submit" id="btSubmit" value="Save" onclick="if (Add() == false) return false;" class="btn btn-info" />
+                        <input name="submit" type="button" id="Reset" value="Reset" onclick="if (LoadForm() == false) return false;" class="btn btn-default" />&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+}
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#DOB').addClass('form-control');
+        @************************************************@
+        var urlSource = '@Url.Action("BindCheckboxOfHobbies", "Home")';
+        $.ajax({
+            url: urlSource,
+            method: "GET",
+            success: function (response) {
+                $('#checkboxContainer').empty();
+                for (var i = 0; i < response.length; i++) {
+                    $("#checkboxContainer").append('<input type="checkbox"class="checkboxPadding" name="HobbiesCB"   id="' + response[i].HobbyId + '" value="' + response[i].HobbyId + '"/>' + response[i].HobbyName + '<br/>')
+                }
+            }
+        })
+        @************************************************@
+        var AddOrEditStatus = '@Model.AddOrEdit'; var ct = '@Model.CityId'; var stt = '@Model.StateId'; var GenderId = '@Model.GenderId';
+        if (AddOrEditStatus == "edit") {
+
+            @*************************************************@
+            var EmployeeId = '@Model.EmpId';
+            var urlSource = '@Url.Action("GetSelectedChechboxIdbyEmpId", "Home")';
+            $.ajax({
+                url: urlSource,
+                method: "GET",
+                data: {
+                    "EmployeeId": EmployeeId
+                },
+                success: function (response) {
+                    $('#checkboxContainer').empty();
+                    var content = [];
+                    for (var i = 0; i < response.length; i++) {
+                        //alert(response[i].HobbyId)
+                        content.push(response[i].HobbyId)
+                    }
+                    @****************************************************************@
+                    var urlSource2 = '@Url.Action("BindCheckboxOfHobbies", "Home")';
+                    $.ajax({
+                        url: urlSource2,
+                        method: "GET",
+                        success: function (response) {
+                            $('#checkboxContainer').empty();
+                            var j = 0;
+                            for (var i = 0; i < response.length; i++) {
+
+                                if (response[i].HobbyId == content[j]) {
+                                    $("#checkboxContainer").append('<input type="checkbox" checked="true" class="checkboxPadding" name="HobbiesCB"   id="' + response[i].HobbyId + '" value="' + response[i].HobbyId + '"/>' + response[i].HobbyName + '<br/>')
+                                    j++;
+                                }
+                                else {
+                                    $("#checkboxContainer").append('<input type="checkbox"class="checkboxPadding" name="HobbiesCB"   id="' + response[i].HobbyId + '" value="' + response[i].HobbyId + '"/>' + response[i].HobbyName + '<br/>')
+
+                                }
+                            }
+                        }
+                    });
+                }
+            })
+            @*************************************************@
+            if (GenderId == 1) {
+                $("#Male").attr('checked', true)
+            }
+            else { $("#Female").attr('checked', true) }
+        }
+
+    })
+
+    $("#Reset").click(function () {
+        $("#FirstName").val(''); $("#MiddleName").val(''); $("#LastName").val(''); $("#Address").val(''); $("#StateId").val(''); $("#CityId").val(''); $("#DOB").val('');
+        $("input[type=checkbox]").each(function () {
+            this.checked = false;
+        })
+
+    });
+
+
+    $("#StateId").change(function () {
+        var selectedStateIdValue = $(this).val();
+        var ddlCity = $("#CityId");
+        if (selectedStateIdValue != "select" || selectedStateIdValue != " " || selectedStateIdValue != null) {
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("FillCityList", "Home")',
+                data: { "StateId": selectedStateIdValue },
+                success: function (data) {
+                    $("#CityId").attr('disabled', false)
+                    ddlCity.html('');
+                    $.each(data, function (id, option) {
+                        ddlCity.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $("#CityId").attr('disabled', true)
+                    $("#CityId").empty();
+                    $("#CityId").append("<option value='0'>--Select City--</option>");
+                    alert('Found error to load City!!.');
+                }
+            });
+        }
+
+    });
+
+</script>

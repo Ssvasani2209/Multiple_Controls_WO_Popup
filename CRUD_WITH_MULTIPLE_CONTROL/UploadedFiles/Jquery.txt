@@ -1,0 +1,49 @@
+Part 29 Jquery Change event (Regarding input element change(type =input,radio,checkbox))
+If we want to access all element of the page means (type=input,radio,CHeckbox,Dropdown(Select),Textarea)
+then we need to assign the common class to everyone and using that class we can access all element of the page.
+----------------------------------------------------------------------------------------
+Part 30 : Jquery Mouse Events  (Video is regarding display help text when the mouse is over to the help image icon and hide the text when mouse is out to the text)
+add 2 div for that.1st div for image display and another is for display text when mouseOver to the image , but imp is to we need to set style initially as none bcz we want to 
+display text only when we Mouseover to the text. 
+important point to keep in ind is that id attribute value of both these div element is gives the id like for Img set id to ImgFirstname and in 2 nd TD set id to DivFirstName bcz we want to access all id at a time  so its easy to replace value in jquery code.Set these 2 div in all TR.
+
+Jquery code look like :
+$(document).ready(function(){
+$('img[src="help.png"]').mouseover(function(){     Here we find image only whose src is help.png
+var helpIconId=$(this).attr('id');     here we find the id of current image 
+var DivId=helpIconId.replace("Img","Div");  after finding image element id we just replace first 3 char which are different in that 2 newly added line
+$("#"+DivId).fadein(500);   and from here respected help text is display when mouseOver
+
+}).mouseout(function(){     from here we perform mouseout event
+var helpIconId=$(this).attr('id');  here we find the id of current image 
+var DivId=helpIconId.replace("Img","Div"); after finding image element id we just replace first 3 char which are different in that 2 newly added line
+$("#"+DivId).fadeout(500);  and from here respected help text is hide when mouseOut
+
+});
+});
+
+or we can write
+
+$(document).ready(function(){
+$('img[src="help.png"]').mouseover(function(){     Here we find image only whose src is help.png
+$("#"+getDivId(this)).fadein(500);   and from here respected help text is display when mouseOver
+
+}).mouseout(function(){     from here we perform mouseout event
+$("#"+getDivId(this)).fadeout(500);  and from here respected help text is hide when mouseOut
+
+});
+
+function getDivId(helpid)
+{
+var helpIconId=$(helpid).attr('id');
+return helpIconId.replace("Img","Div");
+}
+});
+
+
+Note: we can also use mouseenter and mouseleave as well as handlerin and handlerout instead of mouseover and mouseout these all are work as same
+------------------------------------------------------------------------------------
+
+
+
+

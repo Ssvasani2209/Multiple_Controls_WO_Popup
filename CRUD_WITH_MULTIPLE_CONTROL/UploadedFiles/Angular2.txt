@@ -1,0 +1,55 @@
+Setting Up Angular2 in VS
+Step-1
+Install Node.js and npm  (Get Latest version https://nodejs.org/en/download/
+Download Based on ur JS  (Type in Run window For Check OS : msinfo32  Check SystemType)
+
+msi File Download thase(Install It)
+
+Imp Note :To develop ang app we need node version 4.6.x or greater and npm version 3.x.x or greater
+
+To check The version of node : Open CMD and type node -V
+To Check the npm Version Type npm -V in CMD
+
+Step 2 :Install VS 2015  Update 3
+To verify the version of VS Click on Help and select About Microsoft Visual Studio
+
+Step 3:Configure Environment Settings  for node and npm
+Click on tools Select Options Expand Project And Solutions and select External Web Tools($(Path) ne second place pr levanu 3rd ni jagya e
+And click OK
+
+Step 4: Install Type Script for VS2015
+
+Get Latest version of TypeScript for VS15 (https://www.microsoft.com/en-us/download/details.aspx?id=48593 Click on download button and install it
+
+IMP Note :  To develop Ang App TS2.2.0 or later is required	 	 	
+To verify TS Version Click on help and select about Microsoft Visual studio and scroll down list u will find the version of TS at the end
+
+STEP 5 : Create Empty web application Projects
+File->New-> Project->Select WEB Under visual c#->Select ASP.Net Web Application->OK
+Select Empty Template->OK
+
+Step 6 : Download "QUICK START" File from  Angular Website
+URL : https://github.com/angular/quickstart
+Click on Clone or DOwnload button And select "Download ZIP"
+
+Step 7 : Copy the required "Starter file" to the web application projects
+Extract Downloaded folder
+Open that folder (Required file is)
+src,bs-config.json,package.json,tslint.json  (Copy This File)
+
+Select Solution ->Right click on that and select Open folder in file explorer
+
+Paste That file in Project Folder(2nd Folder)
+Inclide all newly added file in projects
+
+Prompt aavse tya no Select Krvanu
+
+Step 8 : Restore Require Packages
+Right Click on package.json ->Restore Packages (This will Install all required packages)
+Node_Modules folder add Thai Jase(Aa Folder Ne include nahi krvanu Projects ma)
+
+Step 9 : Run Project
+
+Open CMD first Goes to root directory Of project cd:D\AngPractice\AngPractice
+npm start (This will Launch TS Compiler  and compile the application code)
+Later it will launch the Browser

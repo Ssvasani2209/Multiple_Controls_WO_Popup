@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DEVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StateId" Type="Int32" />
+    <NavigationProperty Name="State" Relationship="Self.FK_City_State" FromRole="City" ToRole="State" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_City" FromRole="City" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpId" />
+    </Key>
+    <Property Name="EmpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StateId" Type="Int32" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="GenderId" Type="Int32" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Precision="0" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="City" Relationship="Self.FK_Employee_City" FromRole="Employee" ToRole="City" />
+    <NavigationProperty Name="Gender" Relationship="Self.FK_Employee_Gender" FromRole="Employee" ToRole="Gender" />
+    <NavigationProperty Name="State" Relationship="Self.FK_Employee_State" FromRole="Employee" ToRole="State" />
+    <NavigationProperty Name="SelectedHobbyOfEmployeeWises" Relationship="DEVModel.FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise" FromRole="Employee" ToRole="SelectedHobbyOfEmployeeWise" />
+    <Property Name="FilePath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Gender">
+    <Key>
+      <PropertyRef Name="GenderId" />
+    </Key>
+    <Property Name="GenderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Gender1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Gender" FromRole="Gender" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Hobby">
+    <Key>
+      <PropertyRef Name="HobbyId" />
+    </Key>
+    <Property Name="HobbyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="HobbyName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="SelectedHobbyOfEmployeeWises" Relationship="DEVModel.FK_SelectedHobbyOfEmployeeWise_Hobby" FromRole="Hobby" ToRole="SelectedHobbyOfEmployeeWise" />
+  </EntityType>
+  <EntityType Name="State">
+    <Key>
+      <PropertyRef Name="StateId" />
+    </Key>
+    <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Cities" Relationship="Self.FK_City_State" FromRole="State" ToRole="City" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_State" FromRole="State" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK_City_State">
+    <End Role="State" Type="Self.State" Multiplicity="0..1" />
+    <End Role="City" Type="Self.City" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="State">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="City">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_City">
+    <End Role="City" Type="Self.City" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Gender">
+    <End Role="Gender" Type="Self.Gender" Multiplicity="1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Gender">
+        <PropertyRef Name="GenderId" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="GenderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_State">
+    <End Role="State" Type="Self.State" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="State">
+        <PropertyRef Name="StateId" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="StateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DEV_DB_CONTEXT" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Cities" EntityType="Self.City" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Genders" EntityType="Self.Gender" />
+    <EntitySet Name="Hobbies" EntityType="Self.Hobby" />
+    <EntitySet Name="States" EntityType="Self.State" />
+    <AssociationSet Name="FK_City_State" Association="Self.FK_City_State">
+      <End Role="State" EntitySet="States" />
+      <End Role="City" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_City" Association="Self.FK_Employee_City">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Gender" Association="Self.FK_Employee_Gender">
+      <End Role="Gender" EntitySet="Genders" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_State" Association="Self.FK_Employee_State">
+      <End Role="State" EntitySet="States" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <EntitySet Name="SelectedHobbyOfEmployeeWises" EntityType="DEVModel.SelectedHobbyOfEmployeeWise" />
+    <AssociationSet Name="FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise" Association="DEVModel.FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="SelectedHobbyOfEmployeeWise" EntitySet="SelectedHobbyOfEmployeeWises" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SelectedHobbyOfEmployeeWise_Hobby" Association="DEVModel.FK_SelectedHobbyOfEmployeeWise_Hobby">
+      <End Role="Hobby" EntitySet="Hobbies" />
+      <End Role="SelectedHobbyOfEmployeeWise" EntitySet="SelectedHobbyOfEmployeeWises" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="SelectedHobbyOfEmployeeWise">
+    <Key>
+      <PropertyRef Name="SelectedHobbyId" />
+    </Key>
+    <Property Name="SelectedHobbyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="HobbyId" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="DEVModel.FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise" FromRole="SelectedHobbyOfEmployeeWise" ToRole="Employee" />
+    <NavigationProperty Name="Hobby" Relationship="DEVModel.FK_SelectedHobbyOfEmployeeWise_Hobby" FromRole="SelectedHobbyOfEmployeeWise" ToRole="Hobby" />
+  </EntityType>
+  <Association Name="FK_SelectedHobbyOfEmployeeWise_SelectedHobbyOfEmployeeWise">
+    <End Type="DEVModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="DEVModel.SelectedHobbyOfEmployeeWise" Role="SelectedHobbyOfEmployeeWise" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmpId" />
+      </Principal>
+      <Dependent Role="SelectedHobbyOfEmployeeWise">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SelectedHobbyOfEmployeeWise_Hobby">
+    <End Type="DEVModel.Hobby" Role="Hobby" Multiplicity="0..1" />
+    <End Type="DEVModel.SelectedHobbyOfEmployeeWise" Role="SelectedHobbyOfEmployeeWise" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hobby">
+        <PropertyRef Name="HobbyId" />
+      </Principal>
+      <Dependent Role="SelectedHobbyOfEmployeeWise">
+        <PropertyRef Name="HobbyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
